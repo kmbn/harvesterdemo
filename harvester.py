@@ -21,8 +21,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_fi
 from toml import load as toml
 
 
-appdir = user_data_dir("Harvester")
-
+APPDIR = user_data_dir("Harvester")
 DATABASE = SqliteDatabase(None)
 
 
@@ -128,11 +127,13 @@ class BaseHarvester(object):
 
 def main(config_file):
     config = get_config(config_file)
-    from dhus_harvester import DHuSHarvester as Harvester
-
+    # from dhus_harvester import DHuSHarvester as Harvester
+    Harvester = getattr(
+        __import__(config["harvester_module"]), config["harvester_class"]
+    )
     harvester = Harvester(config)
 
-    @pidfile(harvester.name, piddir=appdir)
+    @pidfile(harvester.name, piddir=APPDIR)
     def run(harvester):
         harvester.run()
 
