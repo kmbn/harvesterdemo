@@ -47,6 +47,7 @@ class BaseHarvester(object):
         self.source = config["source_name"]
         self.database = config["database"]
         self.url_template = config["url_template"]
+        self.start_date = config["start_date"]
         self.config = config
 
     def run(self):
@@ -54,8 +55,8 @@ class BaseHarvester(object):
         logger.debug(
             f"Harvesting from {{config['source_name']}} using {{config['harvester_name']}}..."  # noqa: E501
         )
-        start_date = self._get_start_date()
-        start_url = self._get_start_url(start_date)
+        self.start_date = self._get_start_date()
+        start_url = self._get_start_url(self.start_date)
         self._harvest_products(start_url)
 
     def _initialize_database(self):
