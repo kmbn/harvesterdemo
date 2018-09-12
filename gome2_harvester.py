@@ -91,10 +91,11 @@ class Gome2Harvester(BaseHarvester):
         """Convert an OpenSearch entry into an item that can be saved in the db."""
         logger.debug(f"Found {self.coverage}_{entry}")
         logger.debug(f"Found {entry}")
+        identifier = f"{self.coverage}_{entry}"
         return Item(
             harvester=self.name,
             source=self.source,
-            identifier=f"{self.coverage}_{entry}",
+            identifier=identifier,
             source_date=entry,
             content=None,
         )

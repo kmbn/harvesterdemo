@@ -30,7 +30,7 @@ class Item(Model):
     source = CharField()
     identifier = TextField(unique=True)
     source_date = CharField()
-    content = TextField()
+    content = TextField(null=True)
     harvest_date = DateTimeField(default=datetime.now)
 
     class Meta:
@@ -79,8 +79,9 @@ class BaseHarvester(object):
             start_time = time()
 
             entries, url = self._harvest(url)
-
+            logger.debug(entries)
             items = (self._convert(entry) for entry in entries)
+            logger.debug(f"items={items}")
             self._save_items(items)
             logger.debug("Saved items")
 
@@ -103,7 +104,9 @@ class BaseHarvester(object):
             with DATABASE.atomic():
                 try:
                     self._save_item(item)
-                except IntegrityError:
+                    logger.debug(f"saved {item}")
+                except IntegrityError as e:
+                    logger.debug(e)
                     pass
 
     @retry(
