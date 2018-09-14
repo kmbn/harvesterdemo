@@ -1,0 +1,7 @@
+loader_name = "gome2_loader"
+
+harvester_name = "gome2_so2_test"
+
+database = "harvestdb.db"
+
+ckan_config = "/home/kevin/ckan/etc/default/nextgeoss.ini"

@@ -53,7 +53,7 @@ class BaseHarvester(object):
     def run(self):
         self._initialize_database()
         logger.debug(
-            f"Harvesting from {{config['source_name']}} using {{config['harvester_name']}}..."  # noqa: E501
+            "Harvesting from {} using {}...".format(self.source, self.name)  # noqa: E501
         )
         self.start_date = self._get_start_date()
         start_url = self._get_start_url(self.start_date)
@@ -81,7 +81,7 @@ class BaseHarvester(object):
             entries, url = self._harvest(url)
             logger.debug(entries)
             items = (self._convert(entry) for entry in entries)
-            logger.debug(f"items={items}")
+            logger.debug("items={}".format(items))
             self._save_items(items)
             logger.debug("Saved items")
 
@@ -104,7 +104,7 @@ class BaseHarvester(object):
             with DATABASE.atomic():
                 try:
                     self._save_item(item)
-                    logger.debug(f"saved {item}")
+                    logger.debug("saved {}".format(item))
                 except IntegrityError as e:
                     logger.debug(e)
                     pass

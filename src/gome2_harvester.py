@@ -8,12 +8,12 @@ from harvest import BaseHarvester, Item, logger
 
 class Gome2Harvester(BaseHarvester):
     def __init__(self, config):
-        super().__init__(config)
+        super(Gome2Harvester, self).__init__(config)
         self.coverage = config["coverage"]
         self.today = datetime.utcnow().strftime("%Y-%m-%d")
 
     def _get_start_url(self, start_date):
-        logger.debug(f"Start date: {start_date}")
+        logger.debug("Start date: {}".format(start_date))
         logger.debug(self.start_date)
 
         print(self.url_template.format(start_date=start_date, coverage=self.coverage))
@@ -21,7 +21,7 @@ class Gome2Harvester(BaseHarvester):
 
     def _harvest(self, url):
         logger.debug(self.start_date)
-        logger.debug(f"fetching with {url}")
+        logger.debug("fetching with {}".format(url))
         missing_dates_response = self.get_missing_dates_response(url)
         missing_dates_set = self.make_missing_dates_set(missing_dates_response)
         dates_in_month = self.get_dates_in_month()
@@ -89,9 +89,9 @@ class Gome2Harvester(BaseHarvester):
 
     def _convert(self, entry):
         """Convert an OpenSearch entry into an item that can be saved in the db."""
-        logger.debug(f"Found {self.coverage}_{entry}")
-        logger.debug(f"Found {entry}")
-        identifier = f"{self.coverage}_{entry}"
+        logger.debug("Found {}_{}".format(self.coverage, entry))
+        logger.debug("Found {}".format(entry))
+        identifier = "{}_{}".format(self.coverage, entry)
         return Item(
             harvester=self.name,
             source=self.source,

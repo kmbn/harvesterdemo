@@ -18,11 +18,12 @@ REQUIRED = [
 setup(
     name=NAME,
     version=VERSION,
-    packages=find_packages(where="src"),
+    py_modules=["harvest", "loader"],
     package_dir={"": "src"},
     install_requires=REQUIRED,
     entry_points="""
         [console_scripts]
         harvest=harvest:cli
+        load=loader:cli
     """,
 )
